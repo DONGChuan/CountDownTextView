@@ -24,21 +24,24 @@ public class CountDownTextView extends TextView {
     public static final int TIME_FORMAT_H_M_S = 20;
     public static final int TIME_FORMAT_M_S = 30;
     public static final int TIME_FORMAT_S = 40;
-    public long mCountDownInterval = 1000; 
     
     private static final String TIME_EX_D_H_M_S = "%1$02d:%2$02d:%3$02d:%4$02d";
     private static final String TIME_EX_H_M_S = "%1$02d:%2$02d:%3$02d";
     private static final String TIME_EX_M_S = "%1$02d:%2$02d";
     private static final String TIME_EX_S = "%1$02d";
-    
+
+    public long mCountDownInterval = 1000; // By default, it will count 1s
     private long scheduledTime;
+
     private boolean isAutoShowText;
-    private CountDownCallback countDownCallback;
-    private CountDownHelper  mCountDownHelper;
     private boolean mVisible;
     private boolean mStarted;
     private boolean mRunning;
     private boolean mLogged;
+
+    private CountDownCallback countDownCallback;
+    private CountDownHelper  mCountDownHelper;
+
     private String mFormat;
     private Formatter mFormatter;
     private Locale mFormatterLocale;

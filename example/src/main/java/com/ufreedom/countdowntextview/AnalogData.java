@@ -1,7 +1,7 @@
 package com.ufreedom.countdowntextview;
 
 /**
- * Author SunMeng
+ * Author UFreedom
  * Date : 2015 十月 29
  */
 public class AnalogData {

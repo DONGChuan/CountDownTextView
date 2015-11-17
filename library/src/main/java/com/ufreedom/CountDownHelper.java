@@ -9,7 +9,7 @@ import android.os.SystemClock;
  * and it counts down from that.
  * 
  * Author UFreedom
- * Date : 2015 十一月 02
+ * Date : 02/11/2015
  * The help to CountDown
  */
 public abstract class CountDownHelper  {
@@ -55,14 +55,6 @@ public abstract class CountDownHelper  {
     public abstract void onFinish();
 
     /**
-     * Cancel the countdown.
-     */
-    public synchronized final void cancel() {
-        mCancelled = true;
-        mHandler.removeMessages(UPDATE_TIME);
-    }
-
-    /**
      * Start the countdown.
      */
     public synchronized final void start() {
@@ -71,6 +63,14 @@ public abstract class CountDownHelper  {
             onFinish();
         }
         mHandler.sendMessage(mHandler.obtainMessage(UPDATE_TIME));
+    }
+
+    /**
+     * Cancel the countdown.
+     */
+    public synchronized final void cancel() {
+        mCancelled = true;
+        mHandler.removeMessages(UPDATE_TIME);
     }
     
     // handles counting down
@@ -83,15 +83,6 @@ public abstract class CountDownHelper  {
                 if (mCancelled) {
                     return;
                 }
-
-             /*   final long millisLeft = getTimeLeft(mMillisInFuture);
-                if (millisLeft <= 0){
-                    onFinish();
-                    removeMessages(UPDATE_TIME);
-                }else {
-                    onTick(millisLeft);
-                    sendEmptyMessageDelayed(UPDATE_TIME, mCountdownInterval);
-                }*/
 
                 final long millisLeft = mMillisInFuture - SystemClock.elapsedRealtime();
 
