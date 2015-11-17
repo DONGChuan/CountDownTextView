@@ -44,8 +44,10 @@ public class CountDownTextView extends TextView {
     private Locale mFormatterLocale;
     private Object[] mFormatterArgs = new Object[1];
     private StringBuilder mFormatBuilder;
-    private int mTimeFlag;
+    private int mTimeFormat;
     private StringBuilder mRecycle = new StringBuilder(12);
+
+    /*************************** Constructors ************************************/
 
     public CountDownTextView(Context context) {
         super(context);
@@ -56,7 +58,31 @@ public class CountDownTextView extends TextView {
         super(context, attrs);
         init();
     }
-    
+
+    /*************************** Callbacks ************************************/
+
+    /**
+     * Callbacks mush be implemented by client
+     */
+    public interface CountDownCallback {
+
+        /**
+         * Callback fired on regular interval.
+         * @param countDownTextView The CountDownText instance.
+         * @param millisUntilFinished The amount of time until finished.
+         */
+        void onTick(CountDownTextView countDownTextView,long millisUntilFinished);
+
+        /**
+         * Callback fired when the time is up.
+         * @param countDownTextView The CountDownText instance.
+         */
+        void onFinish(CountDownTextView countDownTextView);
+
+    }
+
+    /***************************  Common Functions ************************************/
+
     private void init(){
         setTimeFormat(TIME_SHOW_H_M_S);
     }
@@ -81,6 +107,10 @@ public class CountDownTextView extends TextView {
         updateRunning();
     }
 
+    /**
+     * Update mRunning flags and whether to start or cancel time counter
+     * according to mVisible & mStarted & itself.
+     */
     private void updateRunning() {
         boolean running = mVisible && mStarted;
         if (running != mRunning) {
@@ -100,7 +130,6 @@ public class CountDownTextView extends TextView {
         startCountDown();
         mStarted = true;
         updateRunning();
-
     }
 
     /**
@@ -112,32 +141,14 @@ public class CountDownTextView extends TextView {
     }
 
     /**
-     * 
-     * @param isAutoShowText if true,it will display the current timer value
+     * @param isAutoShowText if true, it will display the current timer value
      */
     public void setAutoDisplayText(boolean isAutoShowText) {
         this.isAutoShowText = isAutoShowText;
     }
-    
-    public interface CountDownCallback {
-
-        /**
-         * Callback fired on regular interval.
-         * @param countDownTextView The CountDownText instance.
-         * @param millisUntilFinished The amount of time until finished.
-         */
-        void onTick(CountDownTextView countDownTextView,long millisUntilFinished);
-
-        /**
-         * Callback fired when the time is up.
-         * @param countDownTextView The CountDownText instance.
-         */
-        void onFinish(CountDownTextView countDownTextView);
-        
-    }
 
     /**
-     * Sets the format string used for display.  The CountDownTextView will display
+     * Sets the format string used for display. The CountDownTextView will display
      * this string, with the first "%s" replaced by the current timer value in
      * "MM:SS" or "HH:MM:SS" form which dependents on the time format {@link #setTimeFormat(int)}.
      *
@@ -155,10 +166,10 @@ public class CountDownTextView extends TextView {
     }
 
     /**
-     * Return the time in the given format mTimeFlag
+     * Return the time in the given format mTimeFormat
      *
      * @param now current time
-     * @return the time in the given format mTimeFlag
+     * @return the time in the given format mTimeFormat
      */
     private String getFormatTime(long now){
 
@@ -170,22 +181,25 @@ public class CountDownTextView extends TextView {
         mRecycle.setLength(0);
         Formatter f = new Formatter(mRecycle, Locale.getDefault());
 
-        switch (mTimeFlag) {
+        switch (mTimeFormat) {
             case TIME_SHOW_D_H_M_S:
                 return f.format(TIME_FORMAT_D_H_M_S, day, hour, minute, seconds).toString();
             case TIME_SHOW_H_M_S:
+            default:
                 return f.format(TIME_FORMAT_H_M_S, hour, minute, seconds).toString();
             case TIME_SHOW_M_S:
                 return f.format(TIME_FORMAT_M_S, minute, seconds).toString();
             case TIME_SHOW_S:
                 return f.format(TIME_FORMAT_S, seconds).toString();
-            default:
-                return f.format(TIME_FORMAT_H_M_S, seconds).toString();
         }
     }
-    
-    
+
+    /**
+     * Set text (Time) on CountDownTextView
+     * @param now time to be shown
+     */
     private synchronized void updateText(long now) {
+
         String text = getFormatTime(now);
 
         if (mFormat != null) {
@@ -223,33 +237,8 @@ public class CountDownTextView extends TextView {
     }
 
     /**
-     * Sets the format string used for time display.The default display format is "HH:MM:SS"
-     * <p> {@link #TIME_SHOW_D_H_M_S } the  format is "DD:HH:MM:SS" </p>
-     * <p> {@link #TIME_SHOW_H_M_S } the  format is "HH:MM:SS" </p>
-     * <p> {@link #TIME_SHOW_M_S } the  format is "MM:SS" </p>
-     * <p> {@link #TIME_SHOW_S } the  format is "SS" </p>
-     * 
-     * @param timeFlag  the display time flag 
+     * Start to count down time
      */
-    public void setTimeFormat(/*String mTimeFormat,*/int timeFlag) {
-      //  this.mTimeFormat = mTimeFormat;
-        mTimeFlag = timeFlag;
-    }
-
-    /**
-     * @return Return the interval along the way to refresh date
-     */
-    public long getCountDownInterval() {
-        return mCountDownInterval;
-    }
-
-    /**
-     * @param mCountDownInterval The interval along the way to refresh date ,default is 1 seconds
-     */
-    public void setCountDownInterval(long mCountDownInterval) {
-        this.mCountDownInterval = mCountDownInterval;
-    }
-
     private void startCountDown(){
 
         mCountDownHelper  = new CountDownHelper(scheduledTime, mCountDownInterval) {
@@ -285,4 +274,28 @@ public class CountDownTextView extends TextView {
         super.onInitializeAccessibilityNodeInfo(info);
         info.setClassName(CountDownTextView.class.getName());
     }
+
+    /***************************  Setter and Getter ************************************/
+
+    public long getCountDownInterval() {
+        return mCountDownInterval;
+    }
+
+    public void setCountDownInterval(long mCountDownInterval) {
+        this.mCountDownInterval = mCountDownInterval;
+    }
+
+    /**
+     * Sets the format string used for time display.The default display format is "HH:MM:SS"
+     * <p> {@link #TIME_SHOW_D_H_M_S } the  format is "DD:HH:MM:SS" </p>
+     * <p> {@link #TIME_SHOW_H_M_S } the  format is "HH:MM:SS" </p>
+     * <p> {@link #TIME_SHOW_M_S } the  format is "MM:SS" </p>
+     * <p> {@link #TIME_SHOW_S } the  format is "SS" </p>
+     *
+     * @param timeFormat the display time flag
+     */
+    public void setTimeFormat(int timeFormat) {
+        mTimeFormat = timeFormat;
+    }
+    
 }
