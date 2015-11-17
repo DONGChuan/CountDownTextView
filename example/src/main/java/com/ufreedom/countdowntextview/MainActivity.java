@@ -38,17 +38,17 @@ public class MainActivity extends AppCompatActivity {
         List<String> pics = Arrays.asList(Analog.getPics());
                 
         analogDatas.add(new AnalogData("http://img3.3lian.com/2013/s1/65/d/104.jpg",
-                getRandomTime(CountDownTextView.TIME_SHOW_D_H_M_S),
-                CountDownTextView.TIME_SHOW_D_H_M_S));
+                getRandomTime(CountDownTextView.TIME_FORMAT_D_H_M_S),
+                CountDownTextView.TIME_FORMAT_D_H_M_S));
         analogDatas.add(new AnalogData("http://img3.3lian.com/2013/s1/65/d/104.jpg",
-                getRandomTime(CountDownTextView.TIME_SHOW_H_M_S),
-                CountDownTextView.TIME_SHOW_H_M_S));
+                getRandomTime(CountDownTextView.TIME_FORMAT_H_M_S),
+                CountDownTextView.TIME_FORMAT_H_M_S));
         analogDatas.add(new AnalogData("http://img3.3lian.com/2013/s1/65/d/104.jpg",
-                getRandomTime(CountDownTextView.TIME_SHOW_M_S),
-                CountDownTextView.TIME_SHOW_M_S));
+                getRandomTime(CountDownTextView.TIME_FORMAT_M_S),
+                CountDownTextView.TIME_FORMAT_M_S));
         analogDatas.add(new AnalogData("http://img3.3lian.com/2013/s1/65/d/104.jpg",
-                getRandomTime(CountDownTextView.TIME_SHOW_S),
-                CountDownTextView.TIME_SHOW_S));
+                getRandomTime(CountDownTextView.TIME_FORMAT_S),
+                CountDownTextView.TIME_FORMAT_S));
 
         BaseItemDecoration baseItemDecoration = new BaseItemDecoration(32,0,16,1);
         recyclerView.addItemDecoration(baseItemDecoration);
@@ -73,12 +73,12 @@ public class MainActivity extends AppCompatActivity {
         long seconds = 0;
 
         switch (_timeFormat) {
-            case CountDownTextView.TIME_SHOW_D_H_M_S:
-            case CountDownTextView.TIME_SHOW_H_M_S:
+            case CountDownTextView.TIME_FORMAT_D_H_M_S:
+            case CountDownTextView.TIME_FORMAT_H_M_S:
                 hour = 1000 * 60 * 60 * (/*random.nextInt(10)*/10 + 1);
-            case CountDownTextView.TIME_SHOW_M_S:
+            case CountDownTextView.TIME_FORMAT_M_S:
                 minute = 1000 * 60 * (random.nextInt(10) + 1);
-            case CountDownTextView.TIME_SHOW_S:
+            case CountDownTextView.TIME_FORMAT_S:
                 seconds = 1000 * (random.nextInt(10) + 1);
                 break;
         }

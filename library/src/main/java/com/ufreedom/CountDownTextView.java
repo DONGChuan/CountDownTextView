@@ -14,22 +14,22 @@ import java.util.Locale;
 
 /**
  * Custom TextView that implements a simple CountDown.
- * Author UFreedom
+ * Author UFreedom, DChuan
  */
 public class CountDownTextView extends TextView {
 
     private static final String TAG = "CountDownTextView";
 
-    public static final int TIME_SHOW_D_H_M_S = 10;
-    public static final int TIME_SHOW_H_M_S = 20;
-    public static final int TIME_SHOW_M_S = 30;
-    public static final int TIME_SHOW_S = 40;
+    public static final int TIME_FORMAT_D_H_M_S = 10;
+    public static final int TIME_FORMAT_H_M_S = 20;
+    public static final int TIME_FORMAT_M_S = 30;
+    public static final int TIME_FORMAT_S = 40;
     public long mCountDownInterval = 1000; 
     
-    private static final String TIME_FORMAT_D_H_M_S = "%1$02d:%2$02d:%3$02d:%4$02d";
-    private static final String TIME_FORMAT_H_M_S = "%1$02d:%2$02d:%3$02d";
-    private static final String TIME_FORMAT_M_S = "%1$02d:%2$02d";
-    private static final String TIME_FORMAT_S = "%1$02d";
+    private static final String TIME_EX_D_H_M_S = "%1$02d:%2$02d:%3$02d:%4$02d";
+    private static final String TIME_EX_H_M_S = "%1$02d:%2$02d:%3$02d";
+    private static final String TIME_EX_M_S = "%1$02d:%2$02d";
+    private static final String TIME_EX_S = "%1$02d";
     
     private long scheduledTime;
     private boolean isAutoShowText;
@@ -84,7 +84,7 @@ public class CountDownTextView extends TextView {
     /***************************  Common Functions ************************************/
 
     private void init(){
-        setTimeFormat(TIME_SHOW_H_M_S);
+        setTimeFormat(TIME_FORMAT_H_M_S);
     }
 
     @Override
@@ -182,15 +182,15 @@ public class CountDownTextView extends TextView {
         Formatter f = new Formatter(mRecycle, Locale.getDefault());
 
         switch (mTimeFormat) {
-            case TIME_SHOW_D_H_M_S:
-                return f.format(TIME_FORMAT_D_H_M_S, day, hour, minute, seconds).toString();
-            case TIME_SHOW_H_M_S:
+            case TIME_FORMAT_D_H_M_S:
+                return f.format(TIME_EX_D_H_M_S, day, hour, minute, seconds).toString();
+            case TIME_FORMAT_H_M_S:
             default:
-                return f.format(TIME_FORMAT_H_M_S, hour, minute, seconds).toString();
-            case TIME_SHOW_M_S:
-                return f.format(TIME_FORMAT_M_S, minute, seconds).toString();
-            case TIME_SHOW_S:
-                return f.format(TIME_FORMAT_S, seconds).toString();
+                return f.format(TIME_EX_H_M_S, hour, minute, seconds).toString();
+            case TIME_FORMAT_M_S:
+                return f.format(TIME_EX_M_S, minute, seconds).toString();
+            case TIME_FORMAT_S:
+                return f.format(TIME_EX_S, seconds).toString();
         }
     }
 
@@ -287,15 +287,15 @@ public class CountDownTextView extends TextView {
 
     /**
      * Sets the format string used for time display.The default display format is "HH:MM:SS"
-     * <p> {@link #TIME_SHOW_D_H_M_S } the  format is "DD:HH:MM:SS" </p>
-     * <p> {@link #TIME_SHOW_H_M_S } the  format is "HH:MM:SS" </p>
-     * <p> {@link #TIME_SHOW_M_S } the  format is "MM:SS" </p>
-     * <p> {@link #TIME_SHOW_S } the  format is "SS" </p>
+     * <p> {@link #TIME_FORMAT_D_H_M_S } the  format is "DD:HH:MM:SS" </p>
+     * <p> {@link #TIME_FORMAT_H_M_S } the  format is "HH:MM:SS" </p>
+     * <p> {@link #TIME_FORMAT_M_S } the  format is "MM:SS" </p>
+     * <p> {@link #TIME_FORMAT_S } the  format is "SS" </p>
      *
      * @param timeFormat the display time flag
      */
     public void setTimeFormat(int timeFormat) {
         mTimeFormat = timeFormat;
     }
-    
+
 }
