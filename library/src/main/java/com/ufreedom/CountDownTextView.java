@@ -154,7 +154,14 @@ public class CountDownTextView extends TextView {
         }
     }
 
+    /**
+     * Return the time in the given format mTimeFlag
+     *
+     * @param now current time
+     * @return the time in the given format mTimeFlag
+     */
     private String getFormatTime(long now){
+
         long day = ElapsedTimeUtil.MILLISECONDS.toDays(now);
         long hour = ElapsedTimeUtil.MILLISECONDS.toHours(now);
         long minute = ElapsedTimeUtil.MILLISECONDS.toMinutes(now);
@@ -162,28 +169,19 @@ public class CountDownTextView extends TextView {
 
         mRecycle.setLength(0);
         Formatter f = new Formatter(mRecycle, Locale.getDefault());
-        String text;
+
         switch (mTimeFlag) {
             case TIME_SHOW_D_H_M_S:
-                text = f.format(TIME_FORMAT_D_H_M_S, day, hour, minute, seconds).toString();
-                break;
+                return f.format(TIME_FORMAT_D_H_M_S, day, hour, minute, seconds).toString();
             case TIME_SHOW_H_M_S:
-                text = f.format(TIME_FORMAT_H_M_S, hour, minute, seconds).toString();
-                break;
-
+                return f.format(TIME_FORMAT_H_M_S, hour, minute, seconds).toString();
             case TIME_SHOW_M_S:
-                text =  f.format(TIME_FORMAT_M_S, minute, seconds).toString();
-                break;
-
+                return f.format(TIME_FORMAT_M_S, minute, seconds).toString();
             case TIME_SHOW_S:
-                text =  f.format(TIME_FORMAT_S, seconds).toString();
-                break;
+                return f.format(TIME_FORMAT_S, seconds).toString();
             default:
-                text = f.format(TIME_FORMAT_H_M_S, seconds).toString();
-                break;
+                return f.format(TIME_FORMAT_H_M_S, seconds).toString();
         }
-        
-        return text;        
     }
     
     
